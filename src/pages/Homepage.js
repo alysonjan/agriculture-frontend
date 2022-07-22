@@ -1,7 +1,7 @@
 import { Button } from '@mui/material'
 import { Box } from '@mui/system'
 import React from 'react'
-import NewsModal from '../components/Modal'
+import NewsModal from '../components/Modals/Modal'
 import NewsTable from '../components/Tables/NewsTable'
 
 const Homepage = () => {

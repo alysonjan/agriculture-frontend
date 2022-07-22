@@ -4,7 +4,7 @@ import Dialog from '@mui/material/Dialog'
 import DialogTitle from '@mui/material/DialogTitle'
 import { TextField } from '@mui/material'
 import { Box } from '@mui/system'
-import axiosInstance from '../helpers/axios'
+import axiosInstance from '../../helpers/axios'
 import * as filestack from 'filestack-js'
 
 export default function NewsModal({ open, setOpen }) {

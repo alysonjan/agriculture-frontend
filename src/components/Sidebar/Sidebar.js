@@ -159,10 +159,7 @@ export default function MiniDrawer() {
               <ListItemText primary={'Announcement'} />
             </ListItem>
           </Link>
-          <Link
-            to="/announcement"
-            style={{ textDecoration: 'none', color: 'black' }}
-          >
+          <Link to="/events" style={{ textDecoration: 'none', color: 'black' }}>
             <ListItem button key={'Events'}>
               <ListItemIcon>
                 <DateRangeIcon />
@@ -170,7 +167,10 @@ export default function MiniDrawer() {
               <ListItemText primary={'Events'} />
             </ListItem>
           </Link>
-          <Link to="/home" style={{ textDecoration: 'none', color: 'black' }}>
+          <Link
+            to="/publication"
+            style={{ textDecoration: 'none', color: 'black' }}
+          >
             <ListItem button key={'Publications'}>
               <ListItemIcon>
                 <ArticleIcon />
@@ -178,7 +178,10 @@ export default function MiniDrawer() {
               <ListItemText primary={'Publications'} />
             </ListItem>
           </Link>
-          <Link to="/home" style={{ textDecoration: 'none', color: 'black' }}>
+          <Link
+            to="/messages"
+            style={{ textDecoration: 'none', color: 'black' }}
+          >
             <ListItem button key={'Messages'}>
               <ListItemIcon>
                 <EmailIcon />
@@ -189,7 +192,7 @@ export default function MiniDrawer() {
         </List>
         <Divider />
         <List>
-          <Link to="/home" style={{ textDecoration: 'none', color: 'black' }}>
+          <Link to="/users" style={{ textDecoration: 'none', color: 'black' }}>
             <ListItem button key={'Users'}>
               <ListItemIcon>
                 <ManageAccountsIcon />
@@ -197,7 +200,7 @@ export default function MiniDrawer() {
               <ListItemText primary={'Users'} />
             </ListItem>
           </Link>
-          <Link to="/home" style={{ textDecoration: 'none', color: 'black' }}>
+          <Link to="/logout" style={{ textDecoration: 'none', color: 'black' }}>
             <ListItem button key={'Logout'}>
               <ListItemIcon>
                 <LogoutIcon />

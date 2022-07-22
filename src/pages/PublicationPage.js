@@ -1,10 +1,10 @@
 import { Button } from '@mui/material'
 import { Box } from '@mui/system'
 import React from 'react'
-import AnnouncementTable from '../components/Tables/AnnouncementTable'
-import AnnouncementModal from '../components/Modals/AnnouncementModal'
+import PublicationModal from '../components/Modals/PublicationModal'
+import PublicationTable from '../components/Tables/PublicationTable'
 
-const AnnouncementPage = () => {
+const PublicationPage = () => {
   const [open, setOpen] = React.useState(false)
   const handleClickOpen = () => {
     setOpen(true)
@@ -12,7 +12,7 @@ const AnnouncementPage = () => {
 
   return (
     <>
-      <AnnouncementModal open={open} setOpen={setOpen} />
+      <PublicationModal open={open} setOpen={setOpen} />
       <Box
         sx={{
           height: '100vh',
@@ -30,14 +30,14 @@ const AnnouncementPage = () => {
         >
           <Box sx={{ display: 'flex', justifyContent: 'end', mb: 2 }}>
             <Button size="medium" variant="contained" onClick={handleClickOpen}>
-              Create
+              Publish
             </Button>
           </Box>
-          <AnnouncementTable />
+          <PublicationTable />
         </Box>
       </Box>
     </>
   )
 }
 
-export default AnnouncementPage
+export default PublicationPage

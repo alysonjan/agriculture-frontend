@@ -42,13 +42,13 @@ const tableIcons = {
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
 }
 
-const NewsTable = () => {
+const PublicationTable = () => {
   const [data, setData] = useState([])
   const [changeTrigger, setChangeTrigger] = useState(false)
 
   useEffect(() => {
     const getNews = async () => {
-      const res = await axiosInstance.get('/api/news/get')
+      const res = await axiosInstance.get('/api/publication/get')
       if (res.status === 200) {
         setData(res?.data)
       }
@@ -58,20 +58,11 @@ const NewsTable = () => {
 
   return (
     <MaterialTable
-      title="News Table"
+      title="Published Table"
       icons={tableIcons}
       columns={[
         { title: 'Title', field: 'title' },
-        { title: 'Subtitle', field: 'subtitle' },
-        {
-          title: 'Description',
-          field: 'description',
-          render: (item) => (
-            <div onClick={() => alert(item.description)}>
-              {item.description}
-            </div>
-          ),
-        },
+        { title: 'File', field: 'file' },
         {
           title: 'Image URL',
           field: 'image_url',
@@ -163,4 +154,4 @@ const NewsTable = () => {
   )
 }
 
-export default NewsTable
+export default PublicationTable

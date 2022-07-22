@@ -44,6 +44,7 @@ const tableIcons = {
 
 const AnnouncementTable = () => {
   const [data, setData] = useState([])
+  const [changeTrigger, setChangeTrigger] = useState(false)
 
   useEffect(() => {
     const getNews = async () => {
@@ -51,20 +52,40 @@ const AnnouncementTable = () => {
       setData(res?.data)
     }
     getNews()
-  }, [])
+  }, [changeTrigger])
   return (
     <MaterialTable
       title="Announcement Table"
       icons={tableIcons}
       columns={[
         { title: 'Subject', field: 'subject' },
-        { title: 'Description', field: 'description' },
-        { title: 'Image URL', field: 'image_url' },
+        {
+          title: 'Description',
+          field: 'description',
+          render: (item) => (
+            <div onClick={() => alert(item.description)}>
+              {item.description}
+            </div>
+          ),
+        },
+        {
+          title: 'Image URL',
+          field: 'image_url',
+          render: (item) => (
+            <div>
+              <a href={item.image_url} target="_blank" rel="noreferrer">
+                <img src={item.image_url} alt="imagex" height="50" width="50" />
+              </a>
+            </div>
+          ),
+        },
       ]}
       data={data}
       options={{
         actionsColumnIndex: -1,
+        draggable: false,
         sorting: false,
+        search: true,
         headerStyle: {
           backgroundColor: '#8aaae6',
           borderRight: '1px solid #d7d7d7',
@@ -72,106 +93,63 @@ const AnnouncementTable = () => {
           textAlign: 'center',
           fontWeight: 'bold',
         },
+        maxBodyHeight: '500px',
         cellStyle: {
           fontFamily: 'Tahoma, sans-serif',
           fontSize: '12px',
           textAlign: 'left',
-          borderRight: '1px solid #d7d7d7',
+          borderRight: '1px solid #817d7d',
+          maxWidth: '10px',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
+          overflow: 'hidden',
         },
       }}
       editable={{
-        onRowAdd: (newData) =>
-          new Promise((resolve, reject) => {
-            // setTimeout(() => {
-            //   axiosInstance
-            //     .post(
-            //       'api/product/insert',
-            //       {
-            //         prodName: newData.product_name,
-            //         price: newData.price,
-            //         packageCapacity: newData.package_capacity,
-            //         shellPrice: newData.shell_price,
-            //         bottlePrice: newData.bottle_price,
-            //         status: 1,
-            //       },
-            //       {
-            //         headers: {
-            //           accessToken: localStorage.getItem('accessToken'),
-            //         },
-            //       }
-            //     )
-            //     .then((response) => {
-            //       if (response.data.error) {
-            //         //response modal
-            //         reject()
-            //       } else {
-            //         setData([...data, newData])
-            //         setChangeTrigger(!changeTrigger)
-            //         resolve()
-            //       }
-            //     })
-            // }, 1000)
-          }),
         onRowUpdate: (newData, oldData) =>
           new Promise((resolve, reject) => {
-            // setTimeout(() => {
-            //     const dataUpdate = [data];
-            //     const index = oldData.tableData.id;
-            //     dataUpdate[index] = newData;
-            //     axiosInstance.post('api/product/update',
-            //         {
-            //             prodNumber: data[index].product_number,
-            //             prodName: dataUpdate[index].product_name,
-            //             price: dataUpdate[index].price,
-            //             packageCapacity: dataUpdate[index].package_capacity,
-            //             shellPrice: dataUpdate[index].shell_price,
-            //             bottlePrice: dataUpdate[index].bottle_price,
-            //         },
-            //         {
-            //             headers: {
-            //                 accessToken: localStorage.getItem('accessToken')
-            //             }
-            //         }).then((response) => {
-            //             if (response.data.error) {
-            //                 //response modal
-            //                 reject();
-            //             } else {
-            //                 setData([...dataUpdate]);
-            //                 setChangeTrigger(!changeTrigger);
-            //                 resolve();
-            //             }
-            //         });
-            // }, 1000)
+            setTimeout(() => {
+              const dataUpdate = data
+              const index = oldData.tableData.id
+              dataUpdate[index] = newData
+              axiosInstance
+                .put('/api/announcement/update', {
+                  id: index,
+                  subject: dataUpdate[index].subject,
+                  description: dataUpdate[index].description,
+                })
+                .then((response) => {
+                  if (response.data.error) {
+                    reject()
+                  } else {
+                    setData([...dataUpdate])
+                    setChangeTrigger(!changeTrigger)
+                    resolve()
+                  }
+                })
+            }, 1000)
           }),
         onRowDelete: (oldData) =>
           new Promise((resolve, reject) => {
-            // setTimeout(() => {
-            //   const dataDelete = [...data]
-            //   const index = oldData.tableData.id
-            //   dataDelete.splice(index, 1)
-            //   axiosInstance
-            //     .post(
-            //       'api/product/delete',
-            //       {
-            //         prodNumber: data[index].product_number,
-            //       },
-            //       {
-            //         headers: {
-            //           accessToken: localStorage.getItem('accessToken'),
-            //         },
-            //       }
-            //     )
-            //     .then((response) => {
-            //       if (response.data.error) {
-            //         //response modal
-            //         reject()
-            //       } else {
-            //         setData([...dataDelete])
-            //         setChangeTrigger(!changeTrigger)
-            //         resolve()
-            //       }
-            //     })
-            // }, 1000)
+            setTimeout(() => {
+              const dataDelete = [...data]
+              const index = oldData.tableData.id
+              dataDelete.splice(index, 1)
+              axiosInstance
+                .post('/api/announcement/delete', {
+                  id: index,
+                })
+                .then((response) => {
+                  if (response.data.error) {
+                    //response modal
+                    reject()
+                  } else {
+                    setData([...dataDelete])
+                    setChangeTrigger(!changeTrigger)
+                    resolve()
+                  }
+                })
+            }, 1000)
           }),
       }}
     />

@@ -6,6 +6,7 @@ import AnnouncementPage from './pages/AnnoucementPage'
 import LoginPage from './pages/LoginPage'
 import WithoutNav from './components/WithoutNav'
 import WithNav from './components/WithNav'
+import PublicationPage from './pages/PublicationPage'
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route element={<WithNav />}>
           <Route path="/home" element={<Homepage />} />
           <Route path="/announcement" element={<AnnouncementPage />} />
+          <Route path="/publication" element={<PublicationPage />} />
         </Route>
       </Routes>
     </div>
