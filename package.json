@@ -26,11 +26,12 @@
     "react-number-format": "^4.9.3",
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
+    "serve": "^14.0.1",
     "styled-components": "^5.3.5",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "cross-env GENERATE_SOURCEMAP=false react-scripts start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "heroku-postbuild": "npm run build",
