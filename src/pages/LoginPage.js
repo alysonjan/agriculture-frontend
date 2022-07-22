@@ -78,6 +78,7 @@ const LoginPage = () => {
               sx={{ mb: 2 }}
               value={phoneNumber}
               onChange={(e) => setPhoneNumber(e.target.value)}
+              required
             />
             <TextField
               id="password"
@@ -88,6 +89,7 @@ const LoginPage = () => {
               sx={{ mb: 2 }}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              required
             />
             <LoadingButton
               size="large"

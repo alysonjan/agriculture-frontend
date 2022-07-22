@@ -49,19 +49,23 @@ const NewsTable = () => {
   useEffect(() => {
     const getNews = async () => {
       const res = await axiosInstance.get('/api/news/get')
-      setData(res?.data)
+      if (res.status === 200) {
+        setData(res?.data)
+      }
     }
     getNews()
-  }, [])
+  }, [changeTrigger])
+
   return (
     <MaterialTable
       title="News Table"
       icons={tableIcons}
       columns={[
+        { title: 'ID', field: 'id', editable: 'never' },
         { title: 'Title', field: 'title' },
         { title: 'Subtitle', field: 'subtitle' },
         { title: 'Description', field: 'description' },
-        { title: 'Image URL', field: 'image_url' },
+        { title: 'Image URL', field: 'image_url', editable: 'never' },
       ]}
       data={data}
       options={{
@@ -84,64 +88,50 @@ const NewsTable = () => {
       editable={{
         onRowUpdate: (newData, oldData) =>
           new Promise((resolve, reject) => {
-            // setTimeout(() => {
-            //     const dataUpdate = [data];
-            //     const index = oldData.tableData.id;
-            //     dataUpdate[index] = newData;
-            //     axiosInstance.post('api/product/update',
-            //         {
-            //             prodNumber: data[index].product_number,
-            //             prodName: dataUpdate[index].product_name,
-            //             price: dataUpdate[index].price,
-            //             packageCapacity: dataUpdate[index].package_capacity,
-            //             shellPrice: dataUpdate[index].shell_price,
-            //             bottlePrice: dataUpdate[index].bottle_price,
-            //         },
-            //         {
-            //             headers: {
-            //                 accessToken: localStorage.getItem('accessToken')
-            //             }
-            //         }).then((response) => {
-            //             if (response.data.error) {
-            //                 //response modal
-            //                 reject();
-            //             } else {
-            //                 setData([...dataUpdate]);
-            //                 setChangeTrigger(!changeTrigger);
-            //                 resolve();
-            //             }
-            //         });
-            // }, 1000)
+            setTimeout(() => {
+              const dataUpdate = data
+              const index = oldData.tableData.id
+              dataUpdate[index] = newData
+              axiosInstance
+                .put('/api/news/update', {
+                  id: index,
+                  title: dataUpdate[index].title,
+                  subtitle: dataUpdate[index].subtitle,
+                  description: dataUpdate[index].description,
+                })
+                .then((response) => {
+                  if (response.data.error) {
+                    reject()
+                  } else {
+                    setData([...dataUpdate])
+                    setChangeTrigger(!changeTrigger)
+                    resolve()
+                  }
+                })
+            }, 1000)
           }),
+
         onRowDelete: (oldData) =>
           new Promise((resolve, reject) => {
-            // setTimeout(() => {
-            //   const dataDelete = [...data]
-            //   const index = oldData.tableData.id
-            //   dataDelete.splice(index, 1)
-            //   axiosInstance
-            //     .post(
-            //       'api/product/delete',
-            //       {
-            //         prodNumber: data[index].product_number,
-            //       },
-            //       {
-            //         headers: {
-            //           accessToken: localStorage.getItem('accessToken'),
-            //         },
-            //       }
-            //     )
-            //     .then((response) => {
-            //       if (response.data.error) {
-            //         //response modal
-            //         reject()
-            //       } else {
-            //         setData([...dataDelete])
-            //         setChangeTrigger(!changeTrigger)
-            //         resolve()
-            //       }
-            //     })
-            // }, 1000)
+            setTimeout(() => {
+              const dataDelete = [...data]
+              const index = oldData.tableData.id
+              dataDelete.splice(index, 1)
+              axiosInstance
+                .post('/api/news/delete', {
+                  id: index,
+                })
+                .then((response) => {
+                  if (response.data.error) {
+                    //response modal
+                    reject()
+                  } else {
+                    setData([...dataDelete])
+                    setChangeTrigger(!changeTrigger)
+                    resolve()
+                  }
+                })
+            }, 1000)
           }),
       }}
     />
