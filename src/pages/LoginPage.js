@@ -1,9 +1,15 @@
-import { Box, Paper, TextField, Typography } from '@mui/material'
+import {
+  Box,
+  Paper,
+  TextField,
+  Typography,
+  Backdrop,
+  Button,
+} from '@mui/material'
 import React, { useState } from 'react'
 import axiosInstance from '../helpers/axios'
 import { useNavigate } from 'react-router-dom'
-import LoadingButton from '@mui/lab/LoadingButton'
-import SendIcon from '@mui/icons-material/Send'
+import CircularProgress from '@mui/material/CircularProgress'
 
 const LoginPage = () => {
   let navigate = useNavigate()
@@ -34,77 +40,82 @@ const LoginPage = () => {
   }
 
   return (
-    <Box
-      sx={{
-        height: '100vh',
-        width: '100%',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-    >
-      <Paper
-        elevation={3}
+    <>
+      {isLoading ? (
+        <Backdrop
+          sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={isLoading}
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      ) : null}
+
+      <Box
         sx={{
-          width: '50%',
-          margin: 'auto',
+          height: '100vh',
+          width: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
         }}
       >
-        <Box
+        <Paper
+          elevation={3}
           sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
+            width: '50%',
+            margin: 'auto',
           }}
         >
-          <Typography variant="h4" color="primary">
-            Welcome to Admin Portal
-          </Typography>
-        </Box>
-
-        <Box sx={{ display: 'flex', justifyContent: 'center', p: 5 }}>
           <Box
             sx={{
-              width: { sm: 200, md: 400, lg: 700 },
               display: 'flex',
-              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
             }}
           >
-            <TextField
-              id="phonenumber"
-              label="Phone number"
-              variant="outlined"
-              size="medium"
-              sx={{ mb: 2 }}
-              value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
-              required
-            />
-            <TextField
-              id="password"
-              label="Password"
-              variant="outlined"
-              size="medium"
-              type="Password"
-              sx={{ mb: 2 }}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-            <LoadingButton
-              size="large"
-              onClick={submitHandler}
-              endIcon={<SendIcon />}
-              loading={isLoading}
-              loadingPosition="end"
-              variant="contained"
-            >
-              Login
-            </LoadingButton>
+            <Typography variant="h4" color="primary">
+              Welcome to Admin Portal
+            </Typography>
           </Box>
-        </Box>
-      </Paper>
-    </Box>
+          <form onSubmit={submitHandler}>
+            <Box sx={{ display: 'flex', justifyContent: 'center', p: 5 }}>
+              <Box
+                sx={{
+                  width: { sm: 200, md: 400, lg: 700 },
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}
+              >
+                <TextField
+                  id="phonenumber"
+                  label="Phone number"
+                  variant="outlined"
+                  size="medium"
+                  sx={{ mb: 2 }}
+                  value={phoneNumber}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
+                  required
+                />
+                <TextField
+                  id="password"
+                  label="Password"
+                  variant="outlined"
+                  size="medium"
+                  type="Password"
+                  sx={{ mb: 2 }}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+                <Button size="large" type="submit" variant="contained">
+                  Login
+                </Button>
+              </Box>
+            </Box>
+          </form>
+        </Paper>
+      </Box>
+    </>
   )
 }
 
