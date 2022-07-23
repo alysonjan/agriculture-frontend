@@ -33,6 +33,7 @@ const LoginPage = () => {
           if (res.status === 200) {
             setIsLoading(false)
             // setUser(true)
+            localStorage.setItem('token', 'iyot')
             navigate('/home', { state: res?.data, replace: true })
           }
         })

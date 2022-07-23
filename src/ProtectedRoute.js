@@ -1,7 +1,20 @@
-const ProtectedRoute = ({ user, children }) => {
-  if (!user) {
-    // return <Navigate to="/landing" replace />;
-  }
+import React from 'react'
+import { Navigate, Route } from 'react-router-dom'
 
-  return children
-}
+export const ProtectedRoute = ({ component: Component, ...rest }) => (
+  <Route
+    {...rest}
+    render={(props) =>
+      localStorage.getItem('token') ? (
+        <Component {...props} />
+      ) : (
+        <Navigate
+          to={{
+            pathname: '/',
+            state: { from: props.location },
+          }}
+        />
+      )
+    }
+  />
+)
