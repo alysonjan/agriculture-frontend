@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useContext, useMemo, useState } from 'react'
 import './App.css'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import Homepage from './pages/Homepage'
 import AnnouncementPage from './pages/AnnoucementPage'
 import LoginPage from './pages/LoginPage'
@@ -10,6 +10,8 @@ import PublicationPage from './pages/PublicationPage'
 import EventsPage from './pages/EventsPage'
 import MessagesPage from './pages/MessagesPage'
 import UserPage from './pages/UserPage'
+import ProtectedRoute from './ProtectedRoute'
+import { UserContext } from './helpers/UserContext'
 
 function App() {
   return (

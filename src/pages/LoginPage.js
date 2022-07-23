@@ -6,13 +6,15 @@ import {
   Backdrop,
   Button,
 } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import axiosInstance from '../helpers/axios'
 import { useNavigate } from 'react-router-dom'
 import CircularProgress from '@mui/material/CircularProgress'
+import { UserContext } from '../helpers/UserContext'
 
 const LoginPage = () => {
   let navigate = useNavigate()
+  // const { setUser } = useContext(UserContext)
 
   const [phoneNumber, setPhoneNumber] = useState('')
   const [password, setPassword] = useState('')
@@ -30,6 +32,7 @@ const LoginPage = () => {
         .then((res) => {
           if (res.status === 200) {
             setIsLoading(false)
+            // setUser(true)
             navigate('/home', { state: res?.data, replace: true })
           }
         })
