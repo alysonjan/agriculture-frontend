@@ -42,38 +42,30 @@ const tableIcons = {
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
 }
 
-const PublicationTable = () => {
+const EventsTable = () => {
   const [data, setData] = useState([])
   const [changeTrigger, setChangeTrigger] = useState(false)
 
   useEffect(() => {
-    const getPublications = async () => {
-      const res = await axiosInstance.get('/api/publications/get')
+    const getEvents = async () => {
+      const res = await axiosInstance.get('/api/events/get')
       if (res.status === 200) {
         setData(res?.data)
       }
     }
-    getPublications()
+    getEvents()
   }, [changeTrigger])
 
   return (
     <MaterialTable
-      title="Published Table"
+      title="Events Table"
       icons={tableIcons}
       columns={[
         { title: 'Title', field: 'title' },
-        {
-          title: 'File',
-          field: 'file',
-          editable: 'never',
-          render: (item) => (
-            <div>
-              <a href={item.file} target="_blank" rel="noreferrer">
-                <p>{item.file}</p>
-              </a>
-            </div>
-          ),
-        },
+        { title: 'Description', field: 'description' },
+        { title: 'Location', field: 'location' },
+        { title: 'Date', field: 'date' },
+        { title: 'Time', field: 'time' },
         {
           title: 'Image URL',
           field: 'image_url',
@@ -120,9 +112,13 @@ const PublicationTable = () => {
               const index = oldData.tableData.id
               dataUpdate[index] = newData
               axiosInstance
-                .put('/api/publications/update', {
+                .put('/api/events/update', {
                   id: index,
                   title: dataUpdate[index].title,
+                  description: dataUpdate[index].description,
+                  location: dataUpdate[index].location,
+                  date: dataUpdate[index].date,
+                  time: dataUpdate[index].time,
                 })
                 .then((response) => {
                   if (response.data.error) {
@@ -143,7 +139,7 @@ const PublicationTable = () => {
               const index = oldData.tableData.id
               dataDelete.splice(index, 1)
               axiosInstance
-                .post('/api/publications/delete', {
+                .post('/api/events/delete', {
                   id: index,
                 })
                 .then((response) => {
@@ -163,4 +159,4 @@ const PublicationTable = () => {
   )
 }
 
-export default PublicationTable
+export default EventsTable

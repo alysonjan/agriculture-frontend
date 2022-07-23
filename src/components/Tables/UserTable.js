@@ -42,50 +42,35 @@ const tableIcons = {
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
 }
 
-const PublicationTable = () => {
+const UserTable = () => {
   const [data, setData] = useState([])
   const [changeTrigger, setChangeTrigger] = useState(false)
 
   useEffect(() => {
-    const getPublications = async () => {
-      const res = await axiosInstance.get('/api/publications/get')
+    const getUser = async () => {
+      const res = await axiosInstance.get('/api/user/all')
       if (res.status === 200) {
         setData(res?.data)
       }
     }
-    getPublications()
+    getUser()
   }, [changeTrigger])
 
   return (
     <MaterialTable
-      title="Published Table"
+      title="Users Table"
       icons={tableIcons}
       columns={[
-        { title: 'Title', field: 'title' },
-        {
-          title: 'File',
-          field: 'file',
-          editable: 'never',
-          render: (item) => (
-            <div>
-              <a href={item.file} target="_blank" rel="noreferrer">
-                <p>{item.file}</p>
-              </a>
-            </div>
-          ),
-        },
-        {
-          title: 'Image URL',
-          field: 'image_url',
-          editable: 'never',
-          render: (item) => (
-            <div>
-              <a href={item.image_url} target="_blank" rel="noreferrer">
-                <img src={item.image_url} alt="imagex" height="50" width="50" />
-              </a>
-            </div>
-          ),
-        },
+        { title: 'ID', field: 'user_id' },
+        { title: 'Description', field: 'first_name' },
+        { title: 'Location', field: 'last_name' },
+        { title: 'Date', field: 'phone_number' },
+        { title: 'Street', field: 'street' },
+        { title: 'Municipality', field: 'municipality' },
+        { title: 'District', field: 'district' },
+        { title: 'Province', field: 'province' },
+        { title: 'Role', field: 'role' },
+        { title: 'Password', field: 'password' },
       ]}
       data={data}
       options={{
@@ -112,55 +97,59 @@ const PublicationTable = () => {
           overflow: 'hidden',
         },
       }}
-      editable={{
-        onRowUpdate: (newData, oldData) =>
-          new Promise((resolve, reject) => {
-            setTimeout(() => {
-              const dataUpdate = data
-              const index = oldData.tableData.id
-              dataUpdate[index] = newData
-              axiosInstance
-                .put('/api/publications/update', {
-                  id: index,
-                  title: dataUpdate[index].title,
-                })
-                .then((response) => {
-                  if (response.data.error) {
-                    reject()
-                  } else {
-                    setData([dataUpdate])
-                    setChangeTrigger(!changeTrigger)
-                    resolve()
-                  }
-                })
-            }, 1000)
-          }),
+      //   editable={{
+      //     onRowUpdate: (newData, oldData) =>
+      //       new Promise((resolve, reject) => {
+      //         setTimeout(() => {
+      //           const dataUpdate = data
+      //           const index = oldData.tableData.id
+      //           dataUpdate[index] = newData
+      //           axiosInstance
+      //             .put('/api/events/update', {
+      //               id: index,
+      //               title: dataUpdate[index].title,
+      //               description: dataUpdate[index].description,
+      //               location: dataUpdate[index].location,
+      //               date: dataUpdate[index].date,
+      //               time: dataUpdate[index].time,
+      //             })
+      //             .then((response) => {
+      //               if (response.data.error) {
+      //                 reject()
+      //               } else {
+      //                 setData([dataUpdate])
+      //                 setChangeTrigger(!changeTrigger)
+      //                 resolve()
+      //               }
+      //             })
+      //         }, 1000)
+      //       }),
 
-        onRowDelete: (oldData) =>
-          new Promise((resolve, reject) => {
-            setTimeout(() => {
-              const dataDelete = [...data]
-              const index = oldData.tableData.id
-              dataDelete.splice(index, 1)
-              axiosInstance
-                .post('/api/publications/delete', {
-                  id: index,
-                })
-                .then((response) => {
-                  if (response.data.error) {
-                    //response modal
-                    reject()
-                  } else {
-                    setData([...dataDelete])
-                    setChangeTrigger(!changeTrigger)
-                    resolve()
-                  }
-                })
-            }, 1000)
-          }),
-      }}
+      //     onRowDelete: (oldData) =>
+      //       new Promise((resolve, reject) => {
+      //         setTimeout(() => {
+      //           const dataDelete = [...data]
+      //           const index = oldData.tableData.id
+      //           dataDelete.splice(index, 1)
+      //           axiosInstance
+      //             .post('/api/events/delete', {
+      //               id: index,
+      //             })
+      //             .then((response) => {
+      //               if (response.data.error) {
+      //                 //response modal
+      //                 reject()
+      //               } else {
+      //                 setData([...dataDelete])
+      //                 setChangeTrigger(!changeTrigger)
+      //                 resolve()
+      //               }
+      //             })
+      //         }, 1000)
+      //       }),
+      //   }}
     />
   )
 }
 
-export default PublicationTable
+export default UserTable

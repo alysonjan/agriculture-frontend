@@ -47,11 +47,11 @@ const AnnouncementTable = () => {
   const [changeTrigger, setChangeTrigger] = useState(false)
 
   useEffect(() => {
-    const getNews = async () => {
+    const getAnnouncement = async () => {
       const res = await axiosInstance.get('/api/announcement/get')
       setData(res?.data)
     }
-    getNews()
+    getAnnouncement()
   }, [changeTrigger])
   return (
     <MaterialTable
@@ -122,7 +122,7 @@ const AnnouncementTable = () => {
                   if (response.data.error) {
                     reject()
                   } else {
-                    setData([...dataUpdate])
+                    setData([dataUpdate])
                     setChangeTrigger(!changeTrigger)
                     resolve()
                   }

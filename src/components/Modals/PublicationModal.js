@@ -9,13 +9,19 @@ import * as filestack from 'filestack-js'
 
 export default function PublicationModal({ open, setOpen }) {
   const [title, setTitle] = useState('')
-  const [file, setFile] = useState('')
+  const [fileUrl, setFileUrl] = useState('')
   const [url, setUrl] = useState('')
 
   const handleClose = () => {
     setOpen(false)
   }
 
+  const optionsPDF = {
+    accept: ['application/pdf'],
+    onFileUploadFinished: (response) => {
+      setFileUrl(response.url)
+    },
+  }
   const options = {
     accept: ['image/*'],
     onFileUploadFinished: (response) => {
@@ -23,17 +29,22 @@ export default function PublicationModal({ open, setOpen }) {
     },
   }
 
-  const upload = () => {
+  const uploadImage = () => {
     const client = filestack.init('AbGkwK1XQAmpuTvwHktiNz')
     client.picker(options).open()
   }
+  const uploadFile = () => {
+    const client = filestack.init('AbGkwK1XQAmpuTvwHktiNz')
+    client.picker(optionsPDF).open()
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
       await axiosInstance
-        .post('/api/publication/create', {
+        .post('/api/publications/create', {
           title: title,
-          file: file,
+          file: fileUrl,
           image_url: url,
         })
         .then((res) => {
@@ -69,23 +80,23 @@ export default function PublicationModal({ open, setOpen }) {
               onChange={(e) => setTitle(e.target.value)}
               required
             />
-            <TextField
-              id="outlined-textarea"
-              label="File"
-              fullWidth
-              size="small"
-              sx={{ mb: 2 }}
-              value={file}
-              onChange={(e) => setFile(e.target.value)}
-              required
-            />
+
+            <Box mb={3}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => uploadFile()}
+              >
+                Upload a File
+              </Button>
+            </Box>
             <Box>
               <Button
                 variant="contained"
                 color="primary"
-                onClick={() => upload()}
+                onClick={() => uploadImage()}
               >
-                Upload a file
+                Upload a Image
               </Button>
             </Box>
           </Box>
