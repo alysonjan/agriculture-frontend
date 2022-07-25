@@ -6,19 +6,18 @@ import {
   Backdrop,
   Button,
 } from '@mui/material'
-import React, { useState, useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import axiosInstance from '../helpers/axios'
 import { useNavigate } from 'react-router-dom'
 import CircularProgress from '@mui/material/CircularProgress'
-import { UserContext } from '../helpers/UserContext'
+import { Auth } from '../helpers/AuthContext'
 
 const LoginPage = () => {
   let navigate = useNavigate()
-  // const { setUser } = useContext(UserContext)
-
   const [phoneNumber, setPhoneNumber] = useState('')
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const { user, setUser } = useContext(Auth)
 
   const submitHandler = async (e) => {
     e.preventDefault()
@@ -32,9 +31,9 @@ const LoginPage = () => {
         .then((res) => {
           if (res.status === 200) {
             setIsLoading(false)
-            // setUser(true)
-            localStorage.setItem('token', 'iyot')
             navigate('/home', { state: res?.data, replace: true })
+            if (user) return
+            setUser(true)
           }
         })
     } catch (err) {

@@ -102,6 +102,13 @@ export default function MiniDrawer() {
   const handleDrawerClose = () => {
     setOpen(false)
   }
+  const logoutHandler = (e) => {
+    e.preventDefault()
+    window.localStorage.removeItem(
+      '$2a$12$AV9q8pQqQ5zVz2iVSvQTsOfVfbM.SvVvCO4wtED8m/A3dup.x4VhW'
+    )
+    window.location.reload()
+  }
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -198,7 +205,7 @@ export default function MiniDrawer() {
             </ListItem>
           </Link>
           <Link to="/logout" style={{ textDecoration: 'none', color: 'black' }}>
-            <ListItem button key={'Logout'}>
+            <ListItem button key={'Logout'} onClick={logoutHandler}>
               <ListItemIcon>
                 <LogoutIcon />
               </ListItemIcon>

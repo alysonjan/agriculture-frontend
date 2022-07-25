@@ -1,20 +1,21 @@
-import React from 'react'
-import { Navigate, Route } from 'react-router-dom'
+import { Auth } from './helpers/AuthContext'
+import React, { useContext } from 'react'
+import { Navigate, Outlet, useLocation } from 'react-router-dom'
 
-export const ProtectedRoute = ({ component: Component, ...rest }) => (
-  <Route
-    {...rest}
-    render={(props) =>
-      localStorage.getItem('token') ? (
-        <Component {...props} />
-      ) : (
-        <Navigate
-          to={{
-            pathname: '/',
-            state: { from: props.location },
-          }}
-        />
-      )
-    }
-  />
-)
+const useAuth = () => {
+  const { user } = useContext(Auth)
+  return user && user
+}
+
+const ProtectedRoute = () => {
+  const location = useLocation()
+  const isAuth = useAuth()
+
+  return isAuth ? (
+    <Outlet />
+  ) : (
+    <Navigate to="/" replace state={{ from: location }} />
+  )
+}
+
+export default ProtectedRoute
